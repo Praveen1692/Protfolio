@@ -214,7 +214,7 @@ function App() {
               <img
                 src={Prav}
                 alt="Praveen Sharma"
-                className="rounded-full shadow-xl w-3/4 mx-auto lg:w-full transform hover:scale-[1.02] transition-all duration-300"
+                className="rounded-full shadow-xl w-1/2 mx-auto lg:w-4/5 transform hover:scale-[1.02] transition-all duration-300"
               />
             </div>
           </div>
