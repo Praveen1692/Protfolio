@@ -12,14 +12,13 @@ function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Toggle dark mode
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "about", "skills", "projects", "contact"];
+      const sections = ["home", "about", "skills", "projects", "reviews", "contact"];
       const scrollPosition = window.scrollY + 100;
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -61,7 +60,7 @@ function App() {
               </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              {["home", "about", "skills", "projects", "contact"].map(
+              {["home", "about", "skills", "projects", "reviews", "contact"].map(
                 (item) => (
                   <a
                     key={item}
@@ -80,7 +79,6 @@ function App() {
               )}
             </div>
             <div className="flex items-center space-x-4">
-              {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -116,7 +114,7 @@ function App() {
               isDarkMode ? "bg-gray-800" : "bg-white"
             }`}
           >
-            {["home", "about", "skills", "projects", "contact"].map((item) => (
+            {["home", "about", "skills", "projects", "reviews", "contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item}`}
@@ -216,6 +214,7 @@ function App() {
                 alt="Praveen Sharma"
                 className="rounded-full shadow-xl w-1/2 mx-auto lg:w-4/5 transform hover:scale-[1.02] transition-all duration-300"
               />
+              {/* Kept eager loading (no loading="lazy") since this is above the fold */}
             </div>
           </div>
         </div>
@@ -363,6 +362,7 @@ function App() {
                 <img
                   src={project.image}
                   alt={project.title}
+                  loading="lazy" // Added lazy loading for below-the-fold images
                   className="w-full h-48 object-cover transform hover:scale-105 transition-all duration-300"
                 />
                 <div className="p-6">
@@ -378,6 +378,99 @@ function App() {
                   >
                     {project.description}
                   </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section
+        id="reviews"
+        className={`py-20 ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            className={`text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in ${
+              isDarkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Client Reviews
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Vishal Singh",
+                role: "E-commerce Business Owner",
+                review:
+                  "Praveen delivered an outstanding e-commerce platform for my business. His professionalism and attention to detail made the entire process smooth and efficient. Highly recommended!",
+                rating: 5,
+              },
+              {
+                name: "Kunal Gupta",
+                role: "Startup Founder",
+                review:
+                  "Working with Praveen on our 3D visualization app was a game-changer. His technical expertise and creative problem-solving skills exceeded our expectations.",
+                rating: 5,
+              },
+              {
+                name: "Deepika Sharma",
+                role: "Fitness Coach",
+                review:
+                  "The fitness app Praveen built for me is fantastic! It's user-friendly, fast, and exactly what my clients needed. His communication throughout the project was top-notch.",
+                rating: 4,
+              },
+            ].map((review, index) => (
+              <div
+                key={index}
+                className={`p-6 rounded-lg shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ${
+                  isDarkMode ? "bg-gray-800" : "bg-white"
+                }`}
+              >
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {review.name.charAt(0)}
+                  </div>
+                  <div className="ml-4">
+                    <h3
+                      className={`font-semibold ${
+                        isDarkMode ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {review.name}
+                    </h3>
+                    <p
+                      className={`text-sm ${
+                        isDarkMode ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {review.role}
+                    </p>
+                  </div>
+                </div>
+                <p
+                  className={`mb-4 ${
+                    isDarkMode ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
+                  "{review.review}"
+                </p>
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <span
+                      key={i}
+                      className={`${
+                        i < review.rating
+                          ? "text-yellow-400"
+                          : isDarkMode
+                          ? "text-gray-600"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
