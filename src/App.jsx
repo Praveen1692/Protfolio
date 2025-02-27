@@ -60,7 +60,7 @@ function App() {
           left: 0,
           width: "100vw",
           height: "100vh",
-          zIndex: 0, // Lowered z-index to ensure it stays behind content
+          zIndex: 1, // Lowered z-index to ensure it stays behind content
           pointerEvents: "none",
         }}
       >
