@@ -12,6 +12,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  
 
   const toggleDarkMode = () => {
     setIsDarkMode((prevMode) => !prevMode);
