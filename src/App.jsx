@@ -5,6 +5,7 @@ import Gym from "./Images/Gym.jpg";
 import Prav from "./Images/Prav.jpeg";
 import Three from "./Images/Three.avif";
 import Shop from "./Images/Shop.avif";
+import { Tranquiluxe } from "uvcanvas";
 import "./App.css";
 
 function App() {
@@ -13,13 +14,21 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode((prevMode) => !prevMode);
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "about", "skills", "projects", "reviews", "contact"];
+      const sections = [
+        "home",
+        "about",
+        "skills",
+        "projects",
+        "reviews",
+        "contact",
+      ];
       const scrollPosition = window.scrollY + 100;
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (
@@ -32,6 +41,7 @@ function App() {
         }
       }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -42,9 +52,24 @@ function App() {
         isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
+      {/* Tranquiluxe Background */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0, // Lowered z-index to ensure it stays behind content
+          pointerEvents: "none",
+        }}
+      >
+        <Tranquiluxe />
+      </div>
+
       {/* Navigation */}
       <nav
-        className={`shadow-md fixed w-full z-20 transition-all duration-300 ${
+        className={`shadow-md fixed w-full top-0 z-50 transition-all duration-300 ${
           isDarkMode ? "bg-gray-800" : "bg-white"
         }`}
       >
@@ -60,23 +85,28 @@ function App() {
               </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              {["home", "about", "skills", "projects", "reviews", "contact"].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href={`#${item}`}
-                    className={`hover:text-blue-500 hover:scale-105 transition-all duration-200 ${
-                      activeSection === item
-                        ? "text-blue-500 font-semibold"
-                        : isDarkMode
-                        ? "text-gray-300"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                  </a>
-                )
-              )}
+              {[
+                "home",
+                "about",
+                "skills",
+                "projects",
+                "reviews",
+                "contact",
+              ].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item}`}
+                  className={`hover:text-blue-500 hover:scale-105 transition-all duration-200 ${
+                    activeSection === item
+                      ? "text-blue-500 font-semibold"
+                      : isDarkMode
+                      ? "text-gray-300"
+                      : "text-gray-700"
+                  }`}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </a>
+              ))}
             </div>
             <div className="flex items-center space-x-4">
               <button
@@ -91,9 +121,11 @@ function App() {
               </button>
               <div className="md:hidden">
                 <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  onClick={() => setIsMenuOpen((prev) => !prev)}
                   className={`transition-colors duration-200 ${
-                    isDarkMode ? "text-gray-300 hover:text-blue-500" : "text-gray-700 hover:text-blue-600"
+                    isDarkMode
+                      ? "text-gray-300 hover:text-blue-500"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                 >
                   {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -114,22 +146,24 @@ function App() {
               isDarkMode ? "bg-gray-800" : "bg-white"
             }`}
           >
-            {["home", "about", "skills", "projects", "reviews", "contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item}`}
-                className={`block px-3 py-2 rounded-md transition-colors duration-200 ${
-                  activeSection === item
-                    ? "text-blue-500 font-semibold bg-blue-900/20"
-                    : isDarkMode
-                    ? "text-gray-300 hover:text-blue-500 hover:bg-gray-700"
-                    : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </a>
-            ))}
+            {["home", "about", "skills", "projects", "reviews", "contact"].map(
+              (item) => (
+                <a
+                  key={item}
+                  href={`#${item}`}
+                  className={`block px-3 py-2 rounded-md transition-colors duration-200 ${
+                    activeSection === item
+                      ? "text-blue-500 font-semibold bg-blue-900/20"
+                      : isDarkMode
+                      ? "text-gray-300 hover:text-blue-500 hover:bg-gray-700"
+                      : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </a>
+              )
+            )}
           </div>
         </div>
       </nav>
@@ -137,7 +171,7 @@ function App() {
       {/* Hero Section */}
       <section
         id="home"
-        className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center"
+        className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center relative z-10"
       >
         <div className="max-w-7xl mx-auto">
           <div className="lg:flex lg:items-center lg:justify-between">
@@ -213,8 +247,8 @@ function App() {
                 src={Prav}
                 alt="Praveen Sharma"
                 className="rounded-full shadow-xl w-1/2 mx-auto lg:w-4/5 transform hover:scale-[1.02] transition-all duration-300"
+                loading="lazy"
               />
-              {/* Kept eager loading (no loading="lazy") since this is above the fold */}
             </div>
           </div>
         </div>
@@ -223,7 +257,9 @@ function App() {
       {/* About Section */}
       <section
         id="about"
-        className={`py-20 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+        className={`py-20 relative z-10 ${
+          isDarkMode ? "bg-gray-800/90" : "bg-white/90"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
@@ -255,7 +291,9 @@ function App() {
       {/* Skills Section */}
       <section
         id="skills"
-        className={`py-20 ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}
+        className={`py-20 relative z-10 ${
+          isDarkMode ? "bg-gray-900/90" : "bg-gray-50/90"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
@@ -322,7 +360,9 @@ function App() {
       {/* Projects Section */}
       <section
         id="projects"
-        className={`py-20 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+        className={`py-20 relative z-10 ${
+          isDarkMode ? "bg-gray-800/90" : "bg-white/90"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
@@ -362,7 +402,7 @@ function App() {
                 <img
                   src={project.image}
                   alt={project.title}
-                  loading="lazy" // Added lazy loading for below-the-fold images
+                  loading="lazy"
                   className="w-full h-48 object-cover transform hover:scale-105 transition-all duration-300"
                 />
                 <div className="p-6">
@@ -373,9 +413,7 @@ function App() {
                   >
                     {project.title}
                   </h3>
-                  <p
-                    className={isDarkMode ? "text-gray-300" : "text-gray-600"}
-                  >
+                  <p className={isDarkMode ? "text-gray-300" : "text-gray-600"}>
                     {project.description}
                   </p>
                 </div>
@@ -388,7 +426,9 @@ function App() {
       {/* Reviews Section */}
       <section
         id="reviews"
-        className={`py-20 ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}
+        className={`py-20 relative z-10 ${
+          isDarkMode ? "bg-gray-900/90" : "bg-gray-50/90"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
@@ -481,7 +521,9 @@ function App() {
       {/* Contact Section */}
       <section
         id="contact"
-        className={`py-20 ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}
+        className={`py-20 relative z-10 ${
+          isDarkMode ? "bg-gray-900/90" : "bg-gray-50/90"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
@@ -536,6 +578,8 @@ function App() {
               <a
                 key={index}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${
                   isDarkMode
                     ? "text-gray-300 hover:text-blue-400"
@@ -550,9 +594,9 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer
-        className={`py-8 shadow-inner ${
-          isDarkMode ? "bg-gray-800" : "bg-white"
+      <section
+        className={`py-8 shadow-inner relative z-10 ${
+          isDarkMode ? "bg-gray-800/90" : "bg-white/90"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -564,7 +608,7 @@ function App() {
             © {new Date().getFullYear()} Praveen Sharma. All rights reserved.
           </p>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }
